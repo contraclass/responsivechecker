@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Responsive Checker</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Responsive Checker</h1>
+    <p class="tagline">See how any URL renders across devices, browsers, and resolutions.</p>
+  </header>
+
+  <section class="controls">
+    <form id="checkForm">
+      <label for="url">URL</label>
+      <input id="url" name="url" type="url" placeholder="https://www.contraclass.com" required />
+
+      <fieldset>
+        <legend>Device categories</legend>
+        <label><input type="checkbox" name="category" value="mobile" checked> Mobile phones</label>
+        <label><input type="checkbox" name="category" value="tablet" checked> Tablets</label>
+        <label><input type="checkbox" name="category" value="laptop" checked> Laptops</label>
+        <label><input type="checkbox" name="category" value="desktop" checked> Desktops</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Browser engines</legend>
+        <label><input type="checkbox" name="engine" value="chromium" checked> Chromium (Chrome, Edge, Android, Samsung)</label>
+        <label><input type="checkbox" name="engine" value="firefox"> Firefox <span class="pro">pro</span></label>
+        <label><input type="checkbox" name="engine" value="webkit"> Safari (iOS/macOS) <span class="pro">pro</span></label>
+      </fieldset>
+
+      <label class="fullpage">
+        <input type="checkbox" id="fullPage" /> Capture full page (scroll)
+      </label>
+
+      <button type="submit" id="runBtn">Run check</button>
+    </form>
+  </section>
+
+  <section id="results" class="grid"></section>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <header class="cardHead">
+        <h3 class="deviceName"></h3>
+        <span class="deviceSpec"></span>
+      </header>
+      <div class="imgWrap">
+        <div class="loader">loading…</div>
+        <img alt="" />
+      </div>
+      <footer class="cardFoot">
+        <a class="openFull" target="_blank" rel="noopener">Open full size</a>
+      </footer>
+    </article>
+  </template>
+
+  <footer class="pageFoot">
+    <small>Screenshots via <span id="providerLabel">Microlink</span>. Upgrade for Firefox &amp; Safari rendering.</small>
+  </footer>
+
+  <script src="devices.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

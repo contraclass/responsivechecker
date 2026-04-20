@@ -1,0 +1,13 @@
+{
+  "name": "responsivechecker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Screenshot a URL across devices, resolutions, and browser engines.",
+  "scripts": {
+    "dev": "netlify dev",
+    "start": "netlify dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
