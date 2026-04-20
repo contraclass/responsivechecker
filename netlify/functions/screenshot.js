@@ -61,26 +61,25 @@ async function microlink({ url, width, height, dpr, userAgent, fullPage }) {
   return imageUrl;
 }
 
-// ScreenshotOne: paid, supports chromium/firefox/webkit via `browser` param.
+// ScreenshotOne: paid, Chromium-only (covers Chrome, Edge, Android, Samsung, Brave, Opera).
+// Firefox (Gecko) and Safari (WebKit) rendering require a different provider.
 // Uses HMAC-SHA256 signed URLs — secret key stays server-side, never sent to browser.
-async function screenshotone({ url, width, height, dpr, userAgent, engine, fullPage }) {
+async function screenshotone({ url, width, height, dpr, userAgent, fullPage }) {
   const accessKey = process.env.SCREENSHOTONE_ACCESS_KEY;
   const secretKey = process.env.SCREENSHOTONE_SECRET_KEY;
   if (!accessKey) throw new Error("SCREENSHOTONE_ACCESS_KEY not set");
   if (!secretKey) throw new Error("SCREENSHOTONE_SECRET_KEY not set — required for signed URLs");
 
-  const browserMap = { chromium: "chromium", firefox: "firefox", webkit: "webkit" };
   const params = new URLSearchParams({
     access_key: accessKey,
     url,
     viewport_width: width,
     viewport_height: height,
     device_scale_factor: dpr,
-    browser: browserMap[engine] || "chromium",
     full_page: fullPage === "1" ? "true" : "false",
     format: "png",
     cache: "true",
-    cache_ttl: "3600",
+    cache_ttl: "14400",
     block_ads: "true",
     block_cookie_banners: "true",
     delay: "2",

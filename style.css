@@ -106,6 +106,9 @@ fieldset label {
   letter-spacing: 0.1em;
 }
 
+fieldset label.disabled { opacity: 0.45; cursor: not-allowed; }
+fieldset label.disabled input { cursor: not-allowed; }
+
 .fullpage { font-size: 0.95rem; color: var(--muted); }
 
 button {
