@@ -1,6 +1,8 @@
 // Screenshot proxy. Swap providers via SCREENSHOT_PROVIDER env var.
 // Supported: "microlink" (free, Chromium-only), "screenshotone" (paid, all engines).
 
+const crypto = require("crypto");
+
 exports.handler = async (event) => {
   const { url, width, height, dpr, userAgent, engine, fullPage } = event.queryStringParameters || {};
 
@@ -60,13 +62,16 @@ async function microlink({ url, width, height, dpr, userAgent, fullPage }) {
 }
 
 // ScreenshotOne: paid, supports chromium/firefox/webkit via `browser` param.
+// Uses HMAC-SHA256 signed URLs — secret key stays server-side, never sent to browser.
 async function screenshotone({ url, width, height, dpr, userAgent, engine, fullPage }) {
-  const apiKey = process.env.SCREENSHOTONE_ACCESS_KEY;
-  if (!apiKey) throw new Error("SCREENSHOTONE_ACCESS_KEY not set");
+  const accessKey = process.env.SCREENSHOTONE_ACCESS_KEY;
+  const secretKey = process.env.SCREENSHOTONE_SECRET_KEY;
+  if (!accessKey) throw new Error("SCREENSHOTONE_ACCESS_KEY not set");
+  if (!secretKey) throw new Error("SCREENSHOTONE_SECRET_KEY not set — required for signed URLs");
 
   const browserMap = { chromium: "chromium", firefox: "firefox", webkit: "webkit" };
   const params = new URLSearchParams({
-    access_key: apiKey,
+    access_key: accessKey,
     url,
     viewport_width: width,
     viewport_height: height,
@@ -82,5 +87,7 @@ async function screenshotone({ url, width, height, dpr, userAgent, engine, fullP
   });
   if (userAgent) params.set("user_agent", userAgent);
 
-  return `https://api.screenshotone.com/take?${params.toString()}`;
+  const queryString = params.toString();
+  const signature = crypto.createHmac("sha256", secretKey).update(queryString).digest("hex");
+  return `https://api.screenshotone.com/take?${queryString}&signature=${signature}`;
 }

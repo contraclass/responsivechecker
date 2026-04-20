@@ -28,10 +28,12 @@ Two screenshot providers are supported. Swap via `SCREENSHOT_PROVIDER` env var.
 ### ScreenshotOne (paid, full engine support)
 - ~$10/mo for thousands of screenshots
 - Supports Chromium, Firefox, and WebKit
-- Sign up at https://screenshotone.com → grab access key
+- Uses HMAC-SHA256 signed URLs — secret key stays server-side
+- Sign up at https://screenshotone.com → grab access key AND secret key
 - Set env vars:
   - `SCREENSHOT_PROVIDER=screenshotone`
-  - `SCREENSHOTONE_ACCESS_KEY=your_key_here`
+  - `SCREENSHOTONE_ACCESS_KEY=your_access_key`
+  - `SCREENSHOTONE_SECRET_KEY=your_secret_key`
 
 ## Local dev
 
